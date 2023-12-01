@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://brgadv5tas2cf"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_p8ox7"]
+[ext_resource type="Resource" path="res://TerrainData/data.hterrain" id="2_s374r"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_6ilr0"]
+[ext_resource type="Texture2D" uid="uid://d1ru4ukrkr0oe" path="res://World/node_3d_slot0_albedo_bump.png" id="4_0pqp4"]
+[ext_resource type="Texture2D" uid="uid://0exjkawr12qc" path="res://World/node_3d_slot0_normal_roughness.png" id="5_ewbqj"]
+[ext_resource type="PackedScene" uid="uid://cas6ax20d1ogt" path="res://Player/player.tscn" id="6_1v5wp"]
+
+[sub_resource type="Resource" id="Resource_8spcc"]
+script = ExtResource("3_6ilr0")
+mode = 0
+textures = [[ExtResource("4_0pqp4")], [ExtResource("5_ewbqj")]]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.179695, 0.983722, 0, -0.983722, 0.179695, 0, 0, 0, 1, -202.883, 68.8408, 0)
+light_energy = 5.682
+light_indirect_energy = 1.954
+light_volumetric_fog_energy = 2.394
+light_angular_distance = 56.6
+directional_shadow_split_1 = 0.081
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_p8ox7")
+ambient_wind = 1.0
+map_scale = Vector3(0.5, 0.5, 0.5)
+centered = true
+_terrain_data = ExtResource("2_s374r")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 3
+collision_mask = 3
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_8spcc")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = false
+shader_params/u_tile_reduction = Vector4(0, 0, 0, 0)
+shader_params/u_specular = 0.5
+
+[node name="Player" parent="." instance=ExtResource("6_1v5wp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42898, 0)
