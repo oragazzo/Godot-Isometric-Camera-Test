@@ -1,0 +1,153 @@
+[gd_scene load_steps=15 format=3 uid="uid://cas6ax20d1ogt"]
+
+[ext_resource type="Script" path="res://Player/player.gd" id="1_y4707"]
+[ext_resource type="Script" path="res://Player/StaminaBar.gd" id="2_srbjj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_msr13"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_qtx0l"]
+material = SubResource("StandardMaterial3D_msr13")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e51p6"]
+albedo_color = Color(0.0509804, 0.0196078, 0.196078, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_52qap"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p0m25"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stuba"]
+albedo_color = Color(0.219608, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1b6ps"]
+top_radius = 0.2
+bottom_radius = 0.001
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4lnia"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_s7kwm"]
+radius = 0.05
+height = 0.1
+
+[sub_resource type="LabelSettings" id="LabelSettings_yg7w2"]
+font_size = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_k0lxs"]
+line_spacing = 5.0
+font_size = 15
+
+[sub_resource type="LabelSettings" id="LabelSettings_w61kf"]
+line_spacing = 5.0
+font_size = 15
+
+[node name="Player" type="CharacterBody3D"]
+disable_mode = 1
+input_ray_pickable = false
+script = ExtResource("1_y4707")
+
+[node name="CameraRig" type="Marker3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, -3, 7.842, 5)
+doppler_tracking = 2
+fov = 100.0
+near = 0.01
+
+[node name="Camera3D2" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(0.363251, 0.832346, -0.418627, 0, 0.449319, 0.893371, 0.931691, -0.324518, 0.163216, -2.43, 4.602, 1.132)
+doppler_tracking = 2
+fov = 110.7
+near = 0.01
+
+[node name="Camera3D3" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(0.951159, -0.275785, 0.138705, 1.38833e-08, 0.449319, 0.893371, -0.308702, -0.849738, 0.427374, -0.0349939, 4.602, 1.62081)
+doppler_tracking = 2
+fov = 100.0
+near = 0.01
+
+[node name="Cursor" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+gi_mode = 0
+mesh = SubResource("SphereMesh_qtx0l")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_e51p6")
+mesh = SubResource("CapsuleMesh_52qap")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_p0m25")
+
+[node name="PointerNose" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.42329, -0.502987)
+material_override = SubResource("StandardMaterial3D_stuba")
+mesh = SubResource("CylinderMesh_1b6ps")
+
+[node name="EyeRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.64, -0.415)
+material_override = SubResource("StandardMaterial3D_4lnia")
+mesh = SubResource("SphereMesh_s7kwm")
+skeleton = NodePath("../EyeLeft")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.64, -0.41531)
+material_override = SubResource("StandardMaterial3D_4lnia")
+mesh = SubResource("SphereMesh_s7kwm")
+
+[node name="GUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BuildVersion" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 9.0
+offset_right = 227.0
+offset_bottom = 35.0
+text = "Project G - Camera / Movement Demo (v0.0.1)"
+label_settings = SubResource("LabelSettings_yg7w2")
+
+[node name="StaminaBar" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 619.0
+offset_right = 102.0
+offset_bottom = 645.0
+text = "Stamina: -/-"
+script = ExtResource("2_srbjj")
+
+[node name="Controllers" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 919.0
+offset_top = 18.0
+offset_right = 1132.0
+offset_bottom = 207.0
+text = "Movement
+----------------------
+W - Move Forward
+S - Move Back
+A - Strafe Left
+D - Strafe Right
+Shift - Sprint"
+label_settings = SubResource("LabelSettings_k0lxs")
+horizontal_alignment = 1
+
+[node name="CameraControl" type="Label" parent="GUI"]
+layout_mode = 0
+offset_left = 926.0
+offset_top = 230.0
+offset_right = 1129.0
+offset_bottom = 412.0
+text = "Camera Control
+----------------------
+1 - Free Rotational
+2 - Fixed Frontal
+3 - Fixed Sideways"
+label_settings = SubResource("LabelSettings_w61kf")
+horizontal_alignment = 1

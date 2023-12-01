@@ -1,0 +1,27 @@
+[remap]
+
+importer="3d_texture"
+type="CompressedTexture3D"
+uid="uid://cewpugioh1vik"
+path.s3tc="res://.godot/imported/normal_roughness_array.png-e851660d45bd4a8f1eac17b31c936545.s3tc.ctex3d"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://Textures/Ground045_2K-JPG/normal_roughness_array.png"
+dest_files=["res://.godot/imported/normal_roughness_array.png-e851660d45bd4a8f1eac17b31c936545.s3tc.ctex3d"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+slices/horizontal=1
+slices/vertical=1

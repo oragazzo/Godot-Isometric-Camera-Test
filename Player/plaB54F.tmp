@@ -1,0 +1,70 @@
+[gd_scene load_steps=11 format=3 uid="uid://cas6ax20d1ogt"]
+
+[ext_resource type="Script" path="res://Player/player.gd" id="1_y4707"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2el1l"]
+albedo_color = Color(1, 0.65098, 0.654902, 0.592157)
+
+[sub_resource type="SphereMesh" id="SphereMesh_mqdp2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e51p6"]
+albedo_color = Color(0.0509804, 0.0196078, 0.196078, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_52qap"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p0m25"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stuba"]
+albedo_color = Color(0.219608, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1b6ps"]
+top_radius = 0.2
+bottom_radius = 0.001
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4lnia"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_s7kwm"]
+radius = 0.05
+height = 0.1
+
+[node name="Player" type="CharacterBody3D"]
+disable_mode = 1
+input_ray_pickable = false
+script = ExtResource("1_y4707")
+speed = 5.0
+
+[node name="CameraRig" type="Marker3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+transform = Transform3D(0.879689, -0.33696, 0.335568, -0.0126859, 0.688763, 0.724876, -0.475381, -0.641922, 0.601622, 5.83681, 9.76097, 7.68369)
+fov = 99.62
+
+[node name="Cursor" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.6, 0, 0, 0, 39.989, 0, 0, 0, 1, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_2el1l")
+mesh = SubResource("SphereMesh_mqdp2")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_e51p6")
+mesh = SubResource("CapsuleMesh_52qap")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_p0m25")
+
+[node name="Pointer_Nose" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.42329, -0.502987)
+material_override = SubResource("StandardMaterial3D_stuba")
+mesh = SubResource("CylinderMesh_1b6ps")
+
+[node name="Eye_Right" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.64, -0.415)
+material_override = SubResource("StandardMaterial3D_4lnia")
+mesh = SubResource("SphereMesh_s7kwm")
+skeleton = NodePath("../Eye_Left")
+
+[node name="Eye_Left" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.64, -0.41531)
+material_override = SubResource("StandardMaterial3D_4lnia")
+mesh = SubResource("SphereMesh_s7kwm")
