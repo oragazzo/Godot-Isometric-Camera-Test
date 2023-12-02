@@ -33,7 +33,9 @@ func _input(_event):
 		get_tree().quit()
 
 func _physics_process(delta):
-
+	pass
+	
+func _process(delta):
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -56,11 +58,8 @@ func _physics_process(delta):
 	
 	# Player actions
 	sprint()
-	
-func _process(delta):
 	# Stamina regen system
 	stamina_regen()
-	
 	# Camera Controllers
 	camera_follows_player()
 	rotate_camera(delta)
@@ -86,7 +85,7 @@ func change_camera_style():
 func sprint():
 	if Input.is_action_pressed("sprint") and stamina >= 1:
 		speed = sprint_speed
-		stamina -= 1
+		stamina -= stamina_regen_rate
 	else:
 		speed = base_speed
 
