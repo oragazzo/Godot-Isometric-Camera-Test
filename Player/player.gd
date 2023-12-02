@@ -11,6 +11,7 @@ extends CharacterBody3D
 @onready var cursor = $Cursor
 
 @export var stamina = 100
+@export var stamina_regen_rate = 0.03
 
 @export var fall_acceleration = 100
 @export var base_speed = 10
@@ -83,7 +84,7 @@ func change_camera_style():
 	camera.make_current()
 
 func sprint():
-	if Input.is_action_pressed("sprint") and stamina > 0:
+	if Input.is_action_pressed("sprint") and stamina >= 1:
 		speed = sprint_speed
 		stamina -= 1
 	else:
@@ -92,7 +93,7 @@ func sprint():
 
 func stamina_regen():
 	if !Input.is_action_pressed("sprint") and stamina < 100:
-		stamina += 1
+		stamina += stamina_regen_rate
 
 func camera_follows_player():
 	var player_pos = global_transform.origin
