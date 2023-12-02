@@ -8,18 +8,16 @@ extends CharacterBody3D
 
 @onready var camera_rig = $CameraRig
 @onready var camera = camera1
-@onready var cursor= $Cursor
+@onready var cursor = $Cursor
 
 @export var stamina = 100
 
+@export var fall_acceleration = 100
 @export var base_speed = 10
 @export var sprint_speed = 25
 var speed = base_speed
 
 @export var camera_rotation_speed = 250
-var friction = 0.875
-
-var move_direction = Vector3()
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -34,14 +32,6 @@ func _input(_event):
 		get_tree().quit()
 
 func _physics_process(delta):
-	
-	# Camera Controllers
-	camera_follows_player()
-	rotate_camera(delta)
-	look_at_cursor()
-	
-	# TODO: Remove this after Movement Demo
-	change_camera_style()
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
@@ -53,6 +43,10 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
 	
+	# Vertical Velocity
+	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
+		velocity.y = velocity.y - (fall_acceleration * delta)
+	
 	# Move
 	set_up_direction(Vector3.UP)
 	set_floor_stop_on_slope_enabled(true)
@@ -61,8 +55,19 @@ func _physics_process(delta):
 	
 	# Player actions
 	sprint()
+	
+func _process(delta):
+	# Stamina regen system
 	stamina_regen()
 	
+	# Camera Controllers
+	camera_follows_player()
+	rotate_camera(delta)
+	look_at_cursor()
+	
+	# TODO: Remove this after Movement Demo
+	change_camera_style()
+
 # TODO: Remove this after Movement Demo
 func change_camera_style():
 	if Input.is_key_pressed(KEY_1):
