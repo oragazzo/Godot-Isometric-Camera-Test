@@ -14,7 +14,14 @@ light_angular_distance = 56.6
 directional_shadow_split_1 = 0.081
 
 [node name="Player" parent="." instance=ExtResource("6_1v5wp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.42898, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.77204, 0)
+locked_camera = false
+stamina = 100
+stamina_regen_rate = 0.03
+fall_acceleration = 100
+base_speed = 10
+sprint_speed = 25
+camera_rotation_speed = 250
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("7_8ou2p")

@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://mdj62efvu014"]
+
+[ext_resource type="ArrayMesh" uid="uid://bt7otogthvlk7" path="res://Player/Weapons/Models/sniper.obj" id="1_1llhr"]
+[ext_resource type="Script" path="res://Player/Weapons/Gun.gd" id="1_3fevd"]
+[ext_resource type="PackedScene" uid="uid://b1viy8ni277ux" path="res://Player/Weapons/Bullet.tscn" id="2_hgjs0"]
+
+[node name="Gun" type="Node3D"]
+transform = Transform3D(-5, 2.18829e-15, -1.12618e-06, 1.74393e-15, 6.274, -4.49307e-15, 4.37114e-07, -2.18829e-15, -12.882, 0, 0, 0)
+script = ExtResource("1_3fevd")
+Bullet = ExtResource("2_hgjs0")
+muzzle_speed = 5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_1llhr")
+
+[node name="Muzzle" type="Marker3D" parent="."]
+transform = Transform3D(1, -2.82167e-22, 1.67065e-14, 1.34673e-22, 1, -5.57611e-22, -4.91584e-17, -1.10894e-22, 0.999999, -1.78196e-08, 0.00289753, 0.0791151)
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

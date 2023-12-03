@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1viy8ni277ux"]
+
+[ext_resource type="ArrayMesh" uid="uid://rjc0qykh113n" path="res://Player/Weapons/Models/ammo_rocket.obj" id="1_ahikk"]
+[ext_resource type="Script" path="res://Player/Weapons/Bullet.gd" id="1_ml5gd"]
+
+[node name="Bullet" type="Node3D"]
+script = ExtResource("1_ml5gd")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.402, 6.97574e-16, 1.74846e-07, 8.37786e-16, 2, -6.97574e-16, -2.0999e-07, -6.97574e-16, -2, 0, 0, 0)
+mesh = ExtResource("1_ahikk")

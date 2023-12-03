@@ -7,6 +7,8 @@ extends CharacterBody3D
 @onready var camera3 = $CameraRig/Camera3D3
 #
 
+@onready var weapon_controller = $Visuals/WeaponController
+
 @onready var visuals = $Visuals
 
 @onready var camera_rig = $CameraRig
@@ -66,6 +68,10 @@ func _process(delta):
 		if walking:
 			walking = false
 	
+	# Shoot
+	if Input.is_action_just_pressed("shoot"):
+		weapon_controller.shoot()
+	
 	# Move
 	set_up_direction(Vector3.UP)
 	set_floor_stop_on_slope_enabled(true)
@@ -99,6 +105,10 @@ func change_camera_style():
 		
 	camera.make_current()
 #
+
+func shoot():
+	pass
+
 
 func sprint():
 	if Input.is_action_pressed("sprint") and stamina >= 1:

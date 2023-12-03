@@ -1,9 +1,16 @@
-[gd_scene load_steps=15 format=3 uid="uid://cas6ax20d1ogt"]
+[gd_scene load_steps=17 format=3 uid="uid://cas6ax20d1ogt"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_y4707"]
+[ext_resource type="Script" path="res://Player/WeaponController.gd" id="2_oon37"]
 [ext_resource type="Script" path="res://Player/StaminaBar.gd" id="2_srbjj"]
+[ext_resource type="PackedScene" uid="uid://mdj62efvu014" path="res://Player/Weapons/Gun.tscn" id="3_jsegh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p0m25"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e51p6"]
+albedo_color = Color(0.0509804, 0.0196078, 0.196078, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_52qap"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stuba"]
 albedo_color = Color(0.219608, 0, 0, 1)
@@ -28,11 +35,6 @@ metallic = 1.0
 material = SubResource("StandardMaterial3D_msr13")
 radius = 0.1
 height = 0.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e51p6"]
-albedo_color = Color(0.0509804, 0.0196078, 0.196078, 1)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_52qap"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_yg7w2"]
 font_size = 10
@@ -76,32 +78,40 @@ far = 100.0
 
 [node name="Visuals" type="Node3D" parent="."]
 
-[node name="PointerNose" type="MeshInstance3D" parent="Visuals"]
+[node name="Body" type="MeshInstance3D" parent="Visuals"]
+material_override = SubResource("StandardMaterial3D_e51p6")
+mesh = SubResource("CapsuleMesh_52qap")
+skeleton = NodePath("../..")
+
+[node name="PointerNose" type="MeshInstance3D" parent="Visuals/Body"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.42329, -0.502987)
 material_override = SubResource("StandardMaterial3D_stuba")
 mesh = SubResource("CylinderMesh_1b6ps")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="EyeRight" type="MeshInstance3D" parent="Visuals"]
+[node name="EyeRight" type="MeshInstance3D" parent="Visuals/Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.64, -0.415)
 material_override = SubResource("StandardMaterial3D_4lnia")
 mesh = SubResource("SphereMesh_s7kwm")
 skeleton = NodePath("../EyeLeft")
 
-[node name="EyeLeft" type="MeshInstance3D" parent="Visuals"]
+[node name="EyeLeft" type="MeshInstance3D" parent="Visuals/Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.64, -0.41531)
 material_override = SubResource("StandardMaterial3D_4lnia")
 mesh = SubResource("SphereMesh_s7kwm")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
+
+[node name="Hand" type="Marker3D" parent="Visuals/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.500372, 0.175057, -0.345708)
+
+[node name="WeaponController" type="Node" parent="Visuals"]
+script = ExtResource("2_oon37")
+StartingWeapon = ExtResource("3_jsegh")
 
 [node name="Cursor" type="MeshInstance3D" parent="."]
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("SphereMesh_qtx0l")
-
-[node name="Body" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_e51p6")
-mesh = SubResource("CapsuleMesh_52qap")
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
