@@ -5,6 +5,9 @@ extends CharacterBody3D
 @onready var camera1 = $CameraRig/Camera3D
 @onready var camera2 = $CameraRig/Camera3D2
 @onready var camera3 = $CameraRig/Camera3D3
+#
+
+@onready var visuals = $Visuals
 
 @onready var camera_rig = $CameraRig
 @onready var camera = camera1
@@ -17,6 +20,9 @@ extends CharacterBody3D
 @export var base_speed = 10
 @export var sprint_speed = 25
 var speed = base_speed
+
+var walking = false
+var atack_mode = false
 
 @export var camera_rotation_speed = 250
 
@@ -32,23 +38,33 @@ func _input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 
-func _physics_process(delta):
-	pass
+#func _physics_process(_delta):
+#	pass
 	
 func _process(delta):
+	
+	# If in the air, fall towards the floor. Literally gravity
+	if not is_on_floor():
+		velocity.y = velocity.y - (fall_acceleration * delta)
+	
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
+		
+		visuals.look_at(direction + position)
+		
+		if !walking:
+			walking = true
+		
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
-	
-	# Vertical Velocity
-	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
-		velocity.y = velocity.y - (fall_acceleration * delta)
+		
+		if walking:
+			walking = false
 	
 	# Move
 	set_up_direction(Vector3.UP)
@@ -63,10 +79,11 @@ func _process(delta):
 	# Camera Controllers
 	camera_follows_player()
 	rotate_camera(delta)
-	look_at_cursor()
+	manage_cursor()
 	
 	# TODO: Remove this after Movement Demo
 	change_camera_style()
+	#
 
 # TODO: Remove this after Movement Demo
 func change_camera_style():
@@ -81,6 +98,7 @@ func change_camera_style():
 		camera = camera3
 		
 	camera.make_current()
+#
 
 func sprint():
 	if Input.is_action_pressed("sprint") and stamina >= 1:
@@ -88,7 +106,6 @@ func sprint():
 		stamina -= stamina_regen_rate
 	else:
 		speed = base_speed
-
 
 func stamina_regen():
 	if !Input.is_action_pressed("sprint") and stamina < 100:
@@ -98,7 +115,6 @@ func camera_follows_player():
 	var player_pos = global_transform.origin
 	camera_rig.global_transform.origin = player_pos
 
-
 func rotate_camera(delta):
 	if Input.is_action_pressed("rotate_camera_cw") and !locked_camera:
 		camera_rig.rotate_y(deg_to_rad(-camera_rotation_speed * delta)) 
@@ -106,7 +122,7 @@ func rotate_camera(delta):
 		camera_rig.rotate_y(deg_to_rad(camera_rotation_speed * delta)) 
 
 
-func look_at_cursor():
+func manage_cursor():
 	
 	# Create a horizontal plane, and find a point where the ray intersects with it
 	var player_pos = global_transform.origin
@@ -123,4 +139,5 @@ func look_at_cursor():
 	if cursor_pos:
 		cursor.global_transform.origin = cursor_pos + Vector3(0,1,0)
 		# Make player look at the cursor
-		look_at(cursor_pos, Vector3.UP)
+		if atack_mode:
+			look_at(cursor_pos)

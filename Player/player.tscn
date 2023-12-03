@@ -3,20 +3,6 @@
 [ext_resource type="Script" path="res://Player/player.gd" id="1_y4707"]
 [ext_resource type="Script" path="res://Player/StaminaBar.gd" id="2_srbjj"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_msr13"]
-albedo_color = Color(0, 0, 0, 1)
-metallic = 1.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_qtx0l"]
-material = SubResource("StandardMaterial3D_msr13")
-radius = 0.1
-height = 0.2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e51p6"]
-albedo_color = Color(0.0509804, 0.0196078, 0.196078, 1)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_52qap"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p0m25"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_stuba"]
@@ -34,6 +20,20 @@ albedo_color = Color(0, 0, 0, 1)
 radius = 0.05
 height = 0.1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_msr13"]
+albedo_color = Color(0, 0, 0, 1)
+metallic = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_qtx0l"]
+material = SubResource("StandardMaterial3D_msr13")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e51p6"]
+albedo_color = Color(0.0509804, 0.0196078, 0.196078, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_52qap"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_yg7w2"]
 font_size = 10
 
@@ -49,6 +49,9 @@ font_size = 15
 disable_mode = 1
 input_ray_pickable = false
 script = ExtResource("1_y4707")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_p0m25")
 
 [node name="CameraRig" type="Marker3D" parent="."]
 
@@ -71,6 +74,26 @@ doppler_tracking = 2
 fov = 50.0
 far = 100.0
 
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="PointerNose" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.42329, -0.502987)
+material_override = SubResource("StandardMaterial3D_stuba")
+mesh = SubResource("CylinderMesh_1b6ps")
+skeleton = NodePath("../..")
+
+[node name="EyeRight" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.64, -0.415)
+material_override = SubResource("StandardMaterial3D_4lnia")
+mesh = SubResource("SphereMesh_s7kwm")
+skeleton = NodePath("../EyeLeft")
+
+[node name="EyeLeft" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.64, -0.41531)
+material_override = SubResource("StandardMaterial3D_4lnia")
+mesh = SubResource("SphereMesh_s7kwm")
+skeleton = NodePath("../..")
+
 [node name="Cursor" type="MeshInstance3D" parent="."]
 cast_shadow = 0
 gi_mode = 0
@@ -79,25 +102,6 @@ mesh = SubResource("SphereMesh_qtx0l")
 [node name="Body" type="MeshInstance3D" parent="."]
 material_override = SubResource("StandardMaterial3D_e51p6")
 mesh = SubResource("CapsuleMesh_52qap")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_p0m25")
-
-[node name="PointerNose" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.42329, -0.502987)
-material_override = SubResource("StandardMaterial3D_stuba")
-mesh = SubResource("CylinderMesh_1b6ps")
-
-[node name="EyeRight" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.64, -0.415)
-material_override = SubResource("StandardMaterial3D_4lnia")
-mesh = SubResource("SphereMesh_s7kwm")
-skeleton = NodePath("../EyeLeft")
-
-[node name="EyeLeft" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.64, -0.41531)
-material_override = SubResource("StandardMaterial3D_4lnia")
-mesh = SubResource("SphereMesh_s7kwm")
 
 [node name="GUI" type="Control" parent="."]
 layout_mode = 3
@@ -125,10 +129,10 @@ script = ExtResource("2_srbjj")
 
 [node name="Controllers" type="Label" parent="GUI"]
 layout_mode = 0
-offset_left = 919.0
-offset_top = 18.0
-offset_right = 1132.0
-offset_bottom = 207.0
+offset_left = 920.0
+offset_top = 11.0
+offset_right = 1133.0
+offset_bottom = 200.0
 text = "Movement
 ----------------------
 W - Move Forward
@@ -141,13 +145,13 @@ horizontal_alignment = 1
 
 [node name="CameraControl" type="Label" parent="GUI"]
 layout_mode = 0
-offset_left = 926.0
-offset_top = 230.0
-offset_right = 1129.0
-offset_bottom = 412.0
+offset_left = 906.0
+offset_top = 235.0
+offset_right = 1148.0
+offset_bottom = 417.0
 text = "Camera Control
 ----------------------
-1 - Free Rotational
+1 - Free Rotational (Experimental)
 2 - Fixed Frontal
 3 - Fixed Sideways"
 label_settings = SubResource("LabelSettings_w61kf")
