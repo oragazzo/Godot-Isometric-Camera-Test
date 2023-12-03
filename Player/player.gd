@@ -26,6 +26,8 @@ var speed = base_speed
 var walking = false
 var atack_mode = false
 
+var angular_acceleration = 7
+
 @export var camera_rotation_speed = 250
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -40,11 +42,7 @@ func _input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 
-#func _physics_process(_delta):
-#	pass
-	
-func _process(delta):
-	
+func _physics_process(delta):
 	# If in the air, fall towards the floor. Literally gravity
 	if not is_on_floor():
 		velocity.y = velocity.y - (fall_acceleration * delta)
@@ -56,7 +54,7 @@ func _process(delta):
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 		
-		visuals.look_at(direction + position)
+		visuals.rotation.y = lerp_angle(visuals.rotation.y, atan2(direction.x, direction.z), delta * angular_acceleration)
 		
 		if !walking:
 			walking = true
@@ -67,21 +65,25 @@ func _process(delta):
 		
 		if walking:
 			walking = false
-	
-	# Shoot
-	if Input.is_action_pressed("shoot"):
-		weapon_controller.shoot()
-	
+			
 	# Move
 	set_up_direction(Vector3.UP)
 	set_floor_stop_on_slope_enabled(true)
 	set_max_slides(3)
 	move_and_slide()
 	
+func _process(delta):
+	
+	# Shoot
+	if Input.is_action_pressed("shoot"):
+		weapon_controller.shoot()
+	
 	# Player actions
 	sprint()
+	
 	# Stamina regen system
 	stamina_regen()
+	
 	# Camera Controllers
 	camera_follows_player()
 	rotate_camera(delta)

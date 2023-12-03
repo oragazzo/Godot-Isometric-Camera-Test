@@ -79,6 +79,7 @@ far = 100.0
 [node name="Visuals" type="Node3D" parent="."]
 
 [node name="Body" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_e51p6")
 mesh = SubResource("CapsuleMesh_52qap")
 skeleton = NodePath("../..")
