@@ -69,7 +69,7 @@ func _process(delta):
 			walking = false
 	
 	# Shoot
-	if Input.is_action_just_pressed("shoot"):
+	if Input.is_action_pressed("shoot"):
 		weapon_controller.shoot()
 	
 	# Move

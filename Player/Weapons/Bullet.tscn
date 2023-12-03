@@ -7,5 +7,5 @@
 script = ExtResource("1_ml5gd")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(-2.402, 6.97574e-16, 1.74846e-07, 8.37786e-16, 2, -6.97574e-16, -2.0999e-07, -6.97574e-16, -2, 0, 0, 0)
+transform = Transform3D(2.402, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 mesh = ExtResource("1_ahikk")

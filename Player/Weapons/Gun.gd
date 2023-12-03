@@ -1,8 +1,8 @@
 extends Node3D
 
 @export var Bullet: PackedScene
-@export var muzzle_speed = 20
-@export var ms_between_shots = 100 # 100 eq to 10 shots per second
+@export var muzzle_speed = 80
+@export var ms_between_shots = 500 # 100 eq to 10 shots per second
 
 @onready var rof_timer = $Timer
 var can_shoot = true
@@ -20,7 +20,7 @@ func shoot():
 	if can_shoot:
 		var new_bullet = Bullet.instantiate()
 		new_bullet.global_transform = $Muzzle.global_transform
-		#new_bullet.speed = muzzle_speed
+		new_bullet.speed = muzzle_speed
 		var scene_root = get_tree().get_root().get_children()[0]
 		scene_root.add_child(new_bullet)
 		can_shoot = false

@@ -8,7 +8,6 @@
 transform = Transform3D(-5, 2.18829e-15, -1.12618e-06, 1.74393e-15, 6.274, -4.49307e-15, 4.37114e-07, -2.18829e-15, -12.882, 0, 0, 0)
 script = ExtResource("1_3fevd")
 Bullet = ExtResource("2_hgjs0")
-muzzle_speed = 5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = ExtResource("1_1llhr")
