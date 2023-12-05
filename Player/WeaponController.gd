@@ -14,10 +14,8 @@ func _ready():
 
 func equip_weapon(weapon_to_equip):
 	if equiped_weapon:
-		print("Deleting current weapon")
 		equiped_weapon.queue_free()
 	else:
-		print("No weapon equipped")
 		equiped_weapon = weapon_to_equip.instantiate()
 		hand.add_child(equiped_weapon)
 

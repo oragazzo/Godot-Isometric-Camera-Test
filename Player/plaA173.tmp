@@ -51,6 +51,13 @@ font_size = 15
 disable_mode = 1
 input_ray_pickable = false
 script = ExtResource("1_y4707")
+locked_camera = null
+stamina = null
+stamina_regen_rate = null
+fall_acceleration = null
+base_speed = null
+sprint_speed = null
+camera_rotation_speed = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_p0m25")
@@ -110,7 +117,6 @@ script = ExtResource("2_oon37")
 StartingWeapon = ExtResource("3_jsegh")
 
 [node name="Cursor" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 cast_shadow = 0
 gi_mode = 0
 mesh = SubResource("SphereMesh_qtx0l")

@@ -24,9 +24,10 @@ extends CharacterBody3D
 var speed = base_speed
 
 var walking = false
-var atack_mode = false
 
 var angular_acceleration = 7
+
+var cursor_pos = Vector3.ZERO
 
 @export var camera_rotation_speed = 250
 
@@ -54,7 +55,8 @@ func _physics_process(delta):
 		velocity.x = direction.x * speed
 		velocity.z = direction.z * speed
 		
-		visuals.rotation.y = lerp_angle(visuals.rotation.y, atan2(direction.x, direction.z), delta * angular_acceleration)
+		if !Input.is_action_pressed("shoot"):
+			visuals.rotation.y = lerp_angle(visuals.rotation.y, atan2(direction.x, direction.z), delta * angular_acceleration)
 		
 		if !walking:
 			walking = true
@@ -65,7 +67,9 @@ func _physics_process(delta):
 		
 		if walking:
 			walking = false
-			
+	
+	manage_cursor()
+	
 	# Move
 	set_up_direction(Vector3.UP)
 	set_floor_stop_on_slope_enabled(true)
@@ -74,9 +78,19 @@ func _physics_process(delta):
 	
 func _process(delta):
 	
-	# Shoot
+	# Get the direction from the player to the marker
+	var marker_direction = cursor.global_transform.origin - global_transform.origin
+	marker_direction = marker_direction.normalized()
+	
+	# Shoot	
 	if Input.is_action_pressed("shoot"):
+		
+		# Rotate the player model towards the marker
+		visuals.rotation.y = lerp_angle(visuals.rotation.y, atan2(marker_direction.x, marker_direction.z), delta * 1000)
+		
+		# TODO: Find a way to only shoot after character is positioned in the marker angle
 		weapon_controller.shoot()
+		
 	
 	# Player actions
 	sprint()
@@ -87,7 +101,6 @@ func _process(delta):
 	# Camera Controllers
 	camera_follows_player()
 	rotate_camera(delta)
-	manage_cursor()
 	
 	# TODO: Remove this after Movement Demo
 	change_camera_style()
@@ -106,10 +119,6 @@ func change_camera_style():
 		camera = camera3
 		
 	camera.make_current()
-#
-
-func shoot():
-	pass
 
 
 func sprint():
@@ -145,11 +154,8 @@ func manage_cursor():
 	var mouse_pos = get_viewport().get_mouse_position()
 	var from = camera.project_ray_origin(mouse_pos)
 	var to = from + camera.project_ray_normal(mouse_pos) * ray_length
-	var cursor_pos = dropPlane.intersects_ray(from,to)
+	cursor_pos = dropPlane.intersects_ray(from,to)
 	
 	# Set the position of cursor visualizer
 	if cursor_pos:
 		cursor.global_transform.origin = cursor_pos + Vector3(0,1,0)
-		# Make player look at the cursor
-		if atack_mode:
-			look_at(cursor_pos)
