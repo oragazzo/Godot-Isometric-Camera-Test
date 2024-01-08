@@ -68,8 +68,6 @@ func _physics_process(delta):
 		if walking:
 			walking = false
 	
-	manage_cursor()
-	
 	# Move
 	set_up_direction(Vector3.UP)
 	set_floor_stop_on_slope_enabled(true)
@@ -90,7 +88,8 @@ func _process(delta):
 		
 		# TODO: Find a way to only shoot after character is positioned in the marker angle
 		weapon_controller.shoot()
-		
+	
+	manage_cursor()
 	
 	# Player actions
 	sprint()
