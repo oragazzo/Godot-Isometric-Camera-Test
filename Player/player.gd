@@ -16,7 +16,7 @@ extends CharacterBody3D
 @onready var cursor = $Cursor
 
 @export var stamina = 100
-@export var stamina_regen_rate = 0.03
+@export var stamina_regen_rate = 1
 
 @export var fall_acceleration = 100
 @export var base_speed = 10
@@ -68,6 +68,24 @@ func _physics_process(delta):
 		if walking:
 			walking = false
 	
+	# Get the direction from the player to the marker
+	var marker_direction = cursor.global_transform.origin - global_transform.origin
+	marker_direction = marker_direction.normalized()
+	
+	# Shoot	
+	if Input.is_action_pressed("shoot"):
+		# Rotate the player model towards the marker
+		visuals.rotation.y = lerp_angle(visuals.rotation.y, atan2(marker_direction.x, marker_direction.z), delta * 60)
+		
+		# TODO: Find a way to only shoot after character is positioned in the marker angle
+		weapon_controller.shoot()
+	
+	# Player actions
+	sprint()
+	
+	# Stamina regen system
+	stamina_regen()
+	
 	# Move
 	set_up_direction(Vector3.UP)
 	set_floor_stop_on_slope_enabled(true)
@@ -76,26 +94,7 @@ func _physics_process(delta):
 	
 func _process(delta):
 	
-	# Get the direction from the player to the marker
-	var marker_direction = cursor.global_transform.origin - global_transform.origin
-	marker_direction = marker_direction.normalized()
-	
-	# Shoot	
-	if Input.is_action_pressed("shoot"):
-		
-		# Rotate the player model towards the marker
-		visuals.rotation.y = lerp_angle(visuals.rotation.y, atan2(marker_direction.x, marker_direction.z), delta * 1000)
-		
-		# TODO: Find a way to only shoot after character is positioned in the marker angle
-		weapon_controller.shoot()
-	
 	manage_cursor()
-	
-	# Player actions
-	sprint()
-	
-	# Stamina regen system
-	stamina_regen()
 	
 	# Camera Controllers
 	camera_follows_player()
@@ -121,7 +120,7 @@ func change_camera_style():
 
 
 func sprint():
-	if Input.is_action_pressed("sprint") and stamina >= 1:
+	if Input.is_action_pressed("sprint") and max(stamina, 0):
 		speed = sprint_speed
 		stamina -= stamina_regen_rate
 	else:
@@ -137,9 +136,9 @@ func camera_follows_player():
 
 func rotate_camera(delta):
 	if Input.is_action_pressed("rotate_camera_cw") and !locked_camera:
-		camera_rig.rotate_y(deg_to_rad(-camera_rotation_speed * delta)) 
+		camera_rig.rotate_y(deg_to_rad(-camera_rotation_speed * delta))
 	if Input.is_action_pressed("rotate_camera_ccw") and !locked_camera:
-		camera_rig.rotate_y(deg_to_rad(camera_rotation_speed * delta)) 
+		camera_rig.rotate_y(deg_to_rad(camera_rotation_speed * delta))
 
 
 func manage_cursor():

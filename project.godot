@@ -15,6 +15,11 @@ run/main_scene="res://World/node_3d.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[display]
+
+window/size/always_on_top=true
+window/size/transparent=true
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/zylann.hterrain/plugin.cfg")
